@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deal Spot – Premium Liquidation Marketplace</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#6C2BD9;--purple-l:#8B4FE8;--purple-xl:#EDE9FE;--purple-d:#5521B5;
+  --teal:#14B8A6;--teal-l:#2DD4BF;--teal-xl:#CCFBF1;
+  --bg:#F8FAFC;--card:#FFFFFF;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --border:#E2E8F0;--border2:#CBD5E1;
+  --grad:linear-gradient(135deg,#6C2BD9 0%,#14B8A6 100%);
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 16px rgba(0,0,0,.1),0 2px 6px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 40px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.06);
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+button{cursor:pointer;font-family:var(--font)}
+input,select{font-family:var(--font)}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#F1F5F9}
+::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
+
+/* BUTTONS */
+.btn-grad{background:var(--grad);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:15px;transition:all .2s;letter-spacing:.01em}
+.btn-grad:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,43,217,.35);filter:brightness(1.05)}
+.btn-outline{background:transparent;color:var(--purple);border:1.5px solid var(--purple);padding:11px 26px;border-radius:10px;font-weight:700;font-size:14px;transition:all .2s}
+.btn-outline:hover{background:var(--purple-xl);transform:translateY(-1px)}
+.btn-sm{padding:9px 18px;font-size:13px;border-radius:8px}
+.btn-wa{background:#25D366;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-wa:hover{background:#22c55e;transform:translateY(-1px)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.b-green{background:#DCFCE7;color:#15803D}
+.b-orange{background:#FEF3C7;color:#B45309}
+.b-blue{background:#DBEAFE;color:#1D4ED8}
+.b-purple{background:var(--purple-xl);color:var(--purple)}
+.b-red{background:#FEF2F2;color:#DC2626}
+.b-teal{background:var(--teal-xl);color:#0F766E}
+
+/* BANNER */
+.banner{background:var(--grad);color:#fff;text-align:center;padding:10px 20px;font-size:14px;font-weight:500;position:sticky;top:0;z-index:200}
+.banner a{color:#fff;text-decoration:underline;cursor:pointer}
+
+/* HEADER */
+.header{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:38px;z-index:100;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:20px}
+.logo-text{font-size:20px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-btn{padding:8px 16px;border-radius:8px;color:var(--text2);font-weight:600;font-size:14px;cursor:pointer;transition:all .15s;border:none;background:none}
+.nav-btn:hover,.nav-btn.active{color:var(--purple);background:var(--purple-xl)}
+.header-actions{display:flex;align-items:center;gap:12px}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* HERO */
+.hero{padding:88px 40px 72px;background:linear-gradient(155deg,#F5F0FF 0%,#F0FDFA 55%,#F8FAFC 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-60px;width:500px;height:500px;background:radial-gradient(circle,rgba(108,43,217,.1) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:7px 16px;border-radius:40px;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:22px;box-shadow:var(--shadow)}
+.hero-dot{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.hero h1{font-size:50px;font-weight:900;line-height:1.1;color:var(--text);margin-bottom:18px;letter-spacing:-.025em}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:18px;color:var(--text2);margin-bottom:34px;line-height:1.7;max-width:480px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini-card{background:#fff;border-radius:12px;padding:16px;border:1px solid var(--border);box-shadow:var(--shadow);cursor:pointer;transition:all .2s}
+.mini-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.mc-cat{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.mc-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.4}
+.mc-price{font-size:20px;font-weight:900;color:var(--purple)}
+.mc-retail{font-size:11px;color:var(--text3);text-decoration:line-through;margin-top:2px}
+
+/* STATS STRIP */
+.stats-strip{background:var(--purple);color:#fff;padding:22px 40px;display:flex;justify-content:center;gap:60px;flex-wrap:wrap}
+.stat-item{text-align:center}
+.stat-num{font-size:28px;font-weight:900;letter-spacing:-.02em}
+.stat-label{font-size:11px;opacity:.7;font-weight:600;margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
+
+/* SECTION */
+.section{padding:72px 40px;max-width:1280px;margin:0 auto}
+.sec-tag{display:inline-block;background:var(--purple-xl);color:var(--purple);padding:5px 14px;border-radius:40px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.sec-title{font-size:36px;font-weight:900;color:var(--text);letter-spacing:-.025em}
+.sec-sub{font-size:16px;color:var(--text2);margin-top:8px;line-height:1.7}
+
+/* CATEGORIES */
+.cat-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:36px}
+.cat-card{background:#fff;border-radius:14px;padding:20px 12px;text-align:center;border:1px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:var(--shadow)}
+.cat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--purple)}
+.cat-icon{width:52px;height:52px;border-radius:14px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.cat-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.3}
+.cat-count{font-size:11px;color:var(--text3);margin-top:4px;font-weight:500}
+
+/* LOT GRID */
+.lots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.lot-card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:all .2s;cursor:pointer;box-shadow:var(--shadow)}
+.lot-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--border2)}
+.lot-img{height:155px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;background:#F8FAFC}
+.lot-top-badges{position:absolute;top:12px;left:12px;display:flex;gap:5px;flex-wrap:wrap}
+.lot-score-badge{position:absolute;top:12px;right:12px}
+.lot-big-icon{font-size:48px}
+.lot-img-cat{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.lot-body{padding:16px}
+.lot-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.4}
+.lot-loc{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-bottom:12px}
+.lot-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.lot-stat{background:#F8FAFC;border-radius:8px;padding:8px 10px}
+.lot-stat-lbl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.lot-stat-val{font-size:14px;font-weight:800;color:var(--text)}
+.lot-pricing{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.lot-price{font-size:22px;font-weight:900;color:var(--purple)}
+.lot-retail-old{font-size:13px;color:var(--text3);text-decoration:line-through}
+.lot-unit-p{font-size:12px;color:var(--text3);margin-bottom:14px}
+.lot-id{font-size:11px;color:var(--text3);margin-top:6px}
+
+/* LISTINGS PAGE */
+.listings-wrap{max-width:1280px;margin:0 auto;padding:32px 40px}
+.listings-layout{display:grid;grid-template-columns:265px 1fr;gap:24px;align-items:start;margin-top:24px}
+.filter-panel{background:#fff;border-radius:16px;border:1px solid var(--border);padding:22px;position:sticky;top:120px;box-shadow:var(--shadow)}
+.filter-head{font-size:16px;font-weight:800;color:var(--text);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+.filter-clear{font-size:12px;color:var(--purple);cursor:pointer;font-weight:700;border:none;background:none;padding:0}
+.filter-sec{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.filter-sec:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.filter-lbl{font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.filter-chk{display:flex;align-items:center;gap:8px;margin-bottom:7px;cursor:pointer;font-size:13px;color:var(--text2);user-select:none}
+.filter-chk input{width:15px;height:15px;accent-color:var(--purple);cursor:pointer}
+.filter-chk-txt{flex:1}
+.filter-cnt{font-size:11px;background:#F1F5F9;color:var(--text3);padding:2px 7px;border-radius:10px;font-weight:700}
+.range-row{display:flex;gap:8px}
+.range-inp{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);outline:none}
+.range-inp:focus{border-color:var(--purple)}
+.listing-controls{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.search-wrap{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:0 14px;height:46px;flex:1;max-width:380px;box-shadow:var(--shadow)}
+.search-wrap input{flex:1;border:none;outline:none;font-size:14px;color:var(--text);background:none}
+.search-wrap input::placeholder{color:var(--text3)}
+.results-ct{font-size:14px;font-weight:600;color:var(--text2)}
+.results-ct strong{color:var(--purple)}
+.sort-sel{padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text2);background:#fff;cursor:pointer;box-shadow:var(--shadow)}
+.sort-sel:focus{outline:none;border-color:var(--purple)}
+.load-more-wrap{text-align:center;margin-top:32px}
+.empty{text-align:center;padding:60px;color:var(--text3)}
+.empty h3{font-size:20px;font-weight:700;margin-bottom:8px;color:var(--text2)}
+
+/* DETAIL PAGE */
+.detail-wrap{max-width:1280px;margin:0 auto;padding:32px 40px}
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:24px;padding:8px 16px;border-radius:8px;background:#fff;border:1px solid var(--border);transition:all .15s}
+.back-btn:hover{background:var(--purple-xl);color:var(--purple)}
+.detail-header{background:#fff;border-radius:16px;border:1px solid var(--border);padding:28px;margin-bottom:20px;box-shadow:var(--shadow)}
+.detail-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.detail-lot-id{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.detail-title{font-size:30px;font-weight:900;color:var(--text);letter-spacing:-.02em;margin-bottom:12px;line-height:1.2}
+.detail-badges-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.detail-loc{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text2)}
+.detail-price-box{text-align:right;background:linear-gradient(135deg,#F5F0FF,#F0FDFA);border-radius:14px;padding:20px 24px;min-width:220px;flex-shrink:0}
+.detail-price-lbl{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.detail-price{font-size:36px;font-weight:900;color:var(--purple);line-height:1}
+.detail-old-retail{font-size:13px;color:var(--text3);text-decoration:line-through;margin:6px 0 4px}
+.detail-savings{font-size:13px;font-weight:700;color:#16A34A}
+.detail-btns{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+
+.metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.metric-card{background:#fff;border-radius:14px;padding:18px;border:1px solid var(--border);text-align:center;box-shadow:var(--shadow)}
+.metric-icon{width:40px;height:40px;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.metric-lbl{font-size:11px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.metric-val{font-size:21px;font-weight:900;color:var(--text);letter-spacing:-.02em}
+.metric-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+.detail-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.detail-box{background:#fff;border-radius:16px;border:1px solid var(--border);padding:24px;box-shadow:var(--shadow)}
+.detail-box-hd{font-size:16px;font-weight:800;color:var(--text);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.detail-box-hd::before{content:'';width:4px;height:18px;background:var(--grad);border-radius:2px;flex-shrink:0}
+.desc-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+.desc-row:last-child{border-bottom:none}
+.desc-key{color:var(--text2);font-weight:500}
+.desc-val{font-weight:700;color:var(--text);text-align:right}
+
+/* CHART BARS (pure CSS) */
+.bar-chart{margin-top:8px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-lbl{font-size:12px;color:var(--text2);width:130px;flex-shrink:0;font-weight:500}
+.bar-track{flex:1;background:#F1F5F9;border-radius:4px;height:22px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;transition:width .5s ease;min-width:0}
+.bar-num{font-size:12px;color:var(--text2);width:60px;text-align:right;flex-shrink:0;font-weight:600}
+
+/* PIE CHART (pure CSS) */
+.pie-legend{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.pie-legend-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.pie-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.pie-name{flex:1;color:var(--text2)}
+.pie-pct{font-weight:700;color:var(--text)}
+
+/* HOW IT WORKS */
+.hiw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.hiw-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:28px;text-align:center;box-shadow:var(--shadow)}
+.hiw-num{width:52px;height:52px;border-radius:14px;background:var(--grad);color:#fff;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.hiw-title{font-size:17px;font-weight:800;margin-bottom:10px}
+.hiw-text{font-size:14px;color:var(--text2);line-height:1.7}
+
+/* TRUST */
+.trust-bar{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px 36px;display:flex;justify-content:space-around;align-items:center;box-shadow:var(--shadow);flex-wrap:wrap;gap:20px}
+.trust-item{display:flex;align-items:center;gap:14px}
+.trust-icon{width:44px;height:44px;border-radius:12px;background:var(--purple-xl);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.trust-h{font-size:15px;font-weight:700;color:var(--text)}
+.trust-p{font-size:12px;color:var(--text3);margin-top:2px}
+.trust-divider{width:1px;height:50px;background:var(--border)}
+
+/* CTA BOX */
+.cta-box{background:var(--grad);border-radius:20px;padding:44px;text-align:center;color:#fff;margin-top:8px}
+.cta-box h2{font-size:26px;font-weight:900;margin-bottom:8px}
+.cta-box p{font-size:15px;opacity:.85;margin-bottom:26px}
+.cta-box-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* EXPORT SECTION */
+.export-banner{background:linear-gradient(135deg,#0F766E,#0F172A);border-radius:16px;padding:32px;color:#fff;margin-bottom:20px}
+.export-banner h3{font-size:20px;font-weight:800;margin-bottom:8px}
+.export-banner p{font-size:14px;opacity:.8;line-height:1.7}
+
+/* FOOTER */
+.footer{background:#0F172A;color:#fff;padding:48px 40px 28px;margin-top:80px}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand p{font-size:13px;color:#94A3B8;margin-top:12px;line-height:1.7;max-width:260px}
+.footer-col h4{font-size:12px;font-weight:700;color:#fff;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}
+.footer-col a{display:block;font-size:13px;color:#94A3B8;margin-bottom:9px;cursor:pointer;transition:.15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #1E293B;padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#475569;flex-wrap:wrap;gap:8px;max-width:1280px;margin:0 auto}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr}.mini-cards{display:none}
+  .cat-grid{grid-template-columns:repeat(4,1fr)}
+  .lots-grid{grid-template-columns:repeat(2,1fr)}
+  .metrics-grid{grid-template-columns:repeat(3,1fr)}
+  .listings-layout{grid-template-columns:1fr}
+  .filter-panel{position:relative;top:0}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  .hero h1{font-size:34px}
+  .lots-grid{grid-template-columns:1fr}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .detail-2col{grid-template-columns:1fr}
+  .hiw-grid{grid-template-columns:1fr}
+  .section,.listings-wrap,.detail-wrap,.hero{padding-left:20px;padding-right:20px}
+  .header{padding:0 16px}
+  .stats-strip{gap:28px}
+  .trust-divider{display:none}
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .3s ease-out both}
+
+/* PURCHASE MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:20px;padding:36px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .25s;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.modal-title{font-size:22px;font-weight:900;color:#0F172A;letter-spacing:-.02em}
+.modal-subtitle{font-size:13px;color:#475569;margin-top:4px}
+.modal-close{width:34px;height:34px;border-radius:50%;background:#F1F5F9;border:none;cursor:pointer;font-size:16px;color:#475569;transition:.15s;flex-shrink:0}
+.modal-close:hover{background:#E2E8F0}
+.order-summary{background:linear-gradient(135deg,#F5F0FF,#F0FDFA);border-radius:12px;padding:16px;margin-bottom:20px}
+.order-tag{font-size:11px;font-weight:700;color:#6C2BD9;letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
+.order-row{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;color:#475569}
+.order-row.total{font-size:16px;font-weight:800;color:#0F172A;border-top:1px solid #DDD6FE;margin-top:8px;padding-top:10px}
+.order-row.total span:last-child{color:#6C2BD9}
+.pay-notice{background:#FEF3C7;border:1px solid #FDE68A;border-radius:10px;padding:14px;margin:16px 0;display:flex;gap:10px;align-items:flex-start}
+.pay-notice p{font-size:13px;color:#92400E;line-height:1.6;margin:0;font-weight:500}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.flbl{font-size:11px;font-weight:700;color:#475569;letter-spacing:.05em;text-transform:uppercase}
+.finp{padding:11px 14px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:14px;font-family:inherit;color:#0F172A;outline:none;transition:.15s}
+.finp:focus{border-color:#6C2BD9;box-shadow:0 0 0 3px rgba(108,43,217,.1)}
+.finp::placeholder{color:#94A3B8}
+.fsubmit{width:100%;padding:14px;background:linear-gradient(135deg,#6C2BD9,#14B8A6);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin-top:12px;font-family:inherit;transition:all .2s}
+.fsubmit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,43,217,.35)}
+.fsubmit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.sbox{text-align:center;padding:24px 0}
+.sicon{width:72px;height:72px;background:#DCFCE7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px}
+.stitle{font-size:22px;font-weight:900;color:#0F172A;margin-bottom:8px}
+.ssub{font-size:14px;color:#475569;margin-bottom:20px;line-height:1.7}
+.email-box{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:20px;text-align:left;margin-top:16px}
+.email-lbl{font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.email-box pre{font-size:12px;color:#0F172A;line-height:1.8;white-space:pre-wrap;font-family:monospace;max-height:300px;overflow-y:auto}
+.copy-btn{background:#6C2BD9;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;width:100%;margin-top:12px;font-family:inherit;transition:.2s}
+.copy-btn:hover{background:#5521B5}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+
+/* LOT IMAGES */
+.lot-img-photo{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.lot-card:hover .lot-img-photo{transform:scale(1.04)}
+.lot-img-fallback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;height:100%}
+/* GALLERY */
+.gallery-wrap{background:#fff;border-radius:16px;border:1px solid var(--border);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.gallery-main{width:100%;height:340px;border-radius:12px;overflow:hidden;background:#F8FAFC;position:relative;margin-bottom:12px;cursor:zoom-in}
+.gallery-main img{width:100%;height:100%;object-fit:contain;transition:opacity .2s}
+.gallery-thumbs{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.gallery-thumb{width:72px;height:72px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;flex-shrink:0;transition:.15s;background:#F1F5F9}
+.gallery-thumb:hover,.gallery-thumb.active{border-color:var(--purple)}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+/* MANIFEST TABLE */
+.manifest-wrap{background:#fff;border-radius:16px;border:1px solid var(--border);padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.manifest-controls{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.manifest-search{display:flex;align-items:center;gap:8px;background:#F8FAFC;border:1px solid var(--border);border-radius:8px;padding:0 12px;height:38px;flex:1;max-width:320px}
+.manifest-search input{flex:1;border:none;outline:none;font-size:13px;background:none;color:var(--text)}
+.manifest-count{font-size:13px;color:var(--text3);font-weight:600}
+.manifest-dl{background:var(--purple-xl);color:var(--purple);border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.manifest-dl:hover{background:var(--purple);color:#fff}
+.manifest-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+.manifest-table{width:100%;border-collapse:collapse;font-size:13px}
+.manifest-table th{background:#F8FAFC;padding:10px 14px;text-align:left;font-weight:700;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+.manifest-table th:hover{background:#F1F5F9}
+.manifest-table th.sort-asc::after{content:' ▲';font-size:9px}
+.manifest-table th.sort-desc::after{content:' ▼';font-size:9px}
+.manifest-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+.manifest-table tr:last-child td{border-bottom:none}
+.manifest-table tr:hover td{background:#FAFBFC}
+.manifest-thumb{width:40px;height:40px;border-radius:6px;object-fit:cover;background:#F1F5F9;cursor:pointer}
+.manifest-loading{text-align:center;padding:40px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<!-- BANNER -->
+<div class="banner">
+  🔥 New Macy's pallets added weekly — Don't miss out &nbsp;·&nbsp; <a onclick="showPage('listings')">Browse Latest Lots →</a>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo" onclick="showPage('home')">
+    <div class="logo-mark">D</div>
+    <span class="logo-text">Deal Spot</span>
+  </div>
+  <nav class="nav-links">
+    <button class="nav-btn active" id="nav-home" onclick="showPage('home')">Home</button>
+    <button class="nav-btn" id="nav-listings" onclick="showPage('listings')">Browse Lots</button>
+    <button class="nav-btn" onclick="showPage('export')">Export Support</button>
+    <button class="nav-btn" id="nav-about" onclick="showPage('about')">About</button>
+  </nav>
+  <div class="header-actions">
+    <a href="https://wa.me/1234567890" target="_blank">
+      <button class="btn-wa btn-sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </button>
+    </a>
+    <button class="btn-grad btn-sm" onclick="showPage('listings')">Browse Lots</button>
+  </div>
+</header>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-chip"><span class="hero-dot"></span> Sourced directly from Macy's liquidation</div>
+        <h1>Premium Liquidation Deals from <span>Top Retailers</span></h1>
+        <p class="hero-sub">Source pallets. Scale your resale business. Export globally — we ship to MENA, Europe, and beyond.</p>
+        <div class="hero-btns">
+          <button class="btn-grad" style="font-size:16px;padding:14px 32px" onclick="showPage('listings')">Browse Lots</button>
+          <a href="https://wa.me/1234567890" target="_blank">
+            <button class="btn-outline" style="font-size:15px;padding:13px 28px">Contact via WhatsApp</button>
+          </a>
+        </div>
+      </div>
+      <div class="mini-cards" id="hero-mini-cards"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-num" id="stat-lots">—</div><div class="stat-label">Live Lots</div></div>
+    <div class="stat-item"><div class="stat-num" id="stat-retail">—</div><div class="stat-label">Total Retail Value</div></div>
+    <div class="stat-item"><div class="stat-num" id="stat-units">—</div><div class="stat-label">Total Units</div></div>
+    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">US Warehouses</div></div>
+    <div class="stat-item"><div class="stat-num">Daily</div><div class="stat-label">Inventory Updates</div></div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section">
+    <div class="sec-tag">Browse by Category</div>
+    <div class="sec-title" style="margin-top:4px">Shop by Product Type</div>
+    <div class="sec-sub">From premium dresses to children's apparel — all sourced from Macy's retail network.</div>
+    <div class="cat-grid" id="cat-grid"></div>
+  </div>
+
+  <!-- FEATURED LOTS -->
+  <div style="background:linear-gradient(180deg,#F8FAFC,#F1F5F9);padding:72px 0">
+    <div style="max-width:1280px;margin:0 auto;padding:0 40px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px;flex-wrap:wrap;gap:16px">
+        <div>
+          <div class="sec-tag">🔥 Hot Right Now</div>
+          <div class="sec-title" style="margin-top:4px">Featured Lots</div>
+          <div class="sec-sub">Highest deal scores in today's inventory.</div>
+        </div>
+        <button class="btn-outline" onclick="showPage('listings')">View All Lots →</button>
+      </div>
+      <div class="lots-grid" id="featured-grid"></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <div style="text-align:center;margin-bottom:40px">
+      <div class="sec-tag">Simple Process</div>
+      <div class="sec-title" style="margin-top:4px">How Deal Spot Works</div>
+      <div class="sec-sub">Three steps from browsing to delivery — anywhere in the world.</div>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-card"><div class="hiw-num">1</div><div class="hiw-title">Browse Lots</div><div class="hiw-text">Filter by category, condition, location, and price. Every lot shows live pricing with full transparency on retail value and deal score.</div></div>
+      <div class="hiw-card"><div class="hiw-num">2</div><div class="hiw-title">Review Details</div><div class="hiw-text">View lot details — units, cartons, warehouse location, condition type, and season. Request a manifest for full SKU-level data.</div></div>
+      <div class="hiw-card"><div class="hiw-num">3</div><div class="hiw-title">Purchase & Ship</div><div class="hiw-text">Submit a purchase request. We coordinate pickup or freight from our US warehouses. Export support available for MENA and international buyers.</div></div>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div style="padding:0 40px 80px;max-width:1280px;margin:0 auto">
+    <div class="trust-bar">
+      <div class="trust-item"><div class="trust-icon">✅</div><div><div class="trust-h">Verified Retail Source</div><div class="trust-p">All lots sourced from Macy's official liquidation program</div></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon">📋</div><div><div class="trust-h">Transparent Manifests</div><div class="trust-p">Full SKU-level manifest available on request</div></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon">🌍</div><div><div class="trust-h">Export-Friendly</div><div class="trust-p">Shipping support to MENA, Europe & beyond</div></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon">🔄</div><div><div class="trust-h">Daily Updates</div><div class="trust-p">New lots added from Macy's daily feed</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LISTINGS PAGE -->
+<div class="page" id="page-listings">
+  <div class="listings-wrap">
+    <div class="sec-tag">Live Inventory</div>
+    <div style="font-size:30px;font-weight:900;letter-spacing:-.025em;margin-top:4px">All Lots</div>
+    <div style="font-size:15px;color:var(--text2);margin-top:6px">Sourced daily from Macy's liquidation — all inventory available for purchase.</div>
+
+    <div class="listing-controls">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="search-input" type="text" placeholder="Search lots, categories, lot IDs..." oninput="applyFilters()">
+      </div>
+      <span class="results-ct" id="results-count"><strong>—</strong> lots found</span>
+      <div style="flex:1"></div>
+      <select class="sort-sel" id="sort-select" onchange="applyFilters()">
+        <option value="deal_score">Best Deal Score</option>
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+        <option value="units_desc">Most Units</option>
+      </select>
+    </div>
+
+    <div class="listings-layout">
+      <div class="filter-panel">
+        <div class="filter-head">Filters <button class="filter-clear" onclick="clearFilters()">Clear all</button></div>
+        <div class="filter-sec" id="filter-cats"></div>
+        <div class="filter-sec" id="filter-conds"></div>
+        <div class="filter-sec" id="filter-locs"></div>
+        <div class="filter-sec">
+          <div class="filter-lbl">Price Range (Deal Spot)</div>
+          <div class="range-row">
+            <input class="range-inp" type="number" id="price-min" placeholder="Min $" oninput="applyFilters()">
+            <input class="range-inp" type="number" id="price-max" placeholder="Max $" oninput="applyFilters()">
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="lots-grid" id="listings-grid"></div>
+        <div class="load-more-wrap" id="load-more-wrap" style="display:none">
+          <button class="btn-outline" id="load-more-btn" onclick="loadMore()">Load More</button>
+        </div>
+        <div class="empty" id="listings-empty" style="display:none">
+          <h3>No lots match your filters</h3>
+          <p>Try adjusting your search or clearing some filters.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div class="detail-wrap" id="detail-content"></div>
+</div>
+
+<!-- EXPORT PAGE -->
+<div class="page" id="page-export">
+  <div style="max-width:960px;margin:0 auto;padding:48px 40px">
+    <div class="sec-tag">International Buyers</div>
+    <div style="font-size:36px;font-weight:900;letter-spacing:-.025em;margin:8px 0 12px">Export Support</div>
+    <div style="font-size:16px;color:var(--text2);margin-bottom:40px">We support buyers in the MENA region, GCC, North Africa, and beyond with end-to-end export assistance.</div>
+    <div class="export-banner">
+      <h3>🌍 We Support Export to MENA &amp; Beyond</h3>
+      <p>Our team has extensive experience shipping liquidation pallets to the Middle East and North Africa. We work with trusted freight forwarders and can handle full documentation.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px">
+      <div class="detail-box"><div style="font-size:28px;margin-bottom:12px">🚢</div><div style="font-weight:800;margin-bottom:8px">Freight Forwarding</div><div style="font-size:14px;color:var(--text2)">We connect you with trusted freight forwarders who specialize in US-to-MENA shipments including sea freight consolidation.</div></div>
+      <div class="detail-box"><div style="font-size:28px;margin-bottom:12px">📦</div><div style="font-weight:800;margin-bottom:8px">Consolidation</div><div style="font-size:14px;color:var(--text2)">Combine multiple lots into a single container to reduce freight costs. We handle warehouse staging and loading.</div></div>
+      <div class="detail-box"><div style="font-size:28px;margin-bottom:12px">📄</div><div style="font-weight:800;margin-bottom:8px">Documentation</div><div style="font-size:14px;color:var(--text2)">Commercial invoices, packing lists, certificates of origin, and custom documentation prepared on your behalf.</div></div>
+    </div>
+    <div style="text-align:center;padding:40px;background:var(--purple-xl);border-radius:16px">
+      <div style="font-size:24px;font-weight:900;color:var(--purple);margin-bottom:8px">Ready to Export?</div>
+      <div style="color:var(--text2);margin-bottom:24px">Contact us via WhatsApp for a personalized export quote and shipping timeline to your country.</div>
+      <a href="https://wa.me/1234567890" target="_blank"><button class="btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contact for Export Assistance
+      </button></a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6C2BD9,#14B8A6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:20px">D</div><span style="font-size:20px;font-weight:800;color:#fff">Deal Spot</span></div>
+      <p>Premium liquidation wholesale marketplace. Sourced from top US retailers — built for resellers and export buyers worldwide.</p>
+    </div>
+    <div class="footer-col"><h4>Marketplace</h4><a onclick="showPage('listings')">Browse All Lots</a><a onclick="showPage('listings','Dresses')">Dresses</a><a onclick="showPage('listings','Womens Better Apparel')">Women's Apparel</a><a onclick="showPage('listings','Textiles')">Textiles</a></div>
+    <div class="footer-col"><h4>Buyers</h4><a>How It Works</a><a onclick="showPage('export')">Export Support</a><a onclick="showPage('export')">MENA Shipping</a><a>Request Manifest</a></div>
+    <div class="footer-col"><h4>Contact</h4><a href="https://wa.me/1234567890" target="_blank">WhatsApp Us</a><a>Email Us</a><a>About Deal Spot</a></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Deal Spot. All rights reserved.</span>
+    <span>Sourced from Macy's Liquidation Program · US Warehouses · Export Ready</span>
+  </div>
+</footer>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+// ── SUPABASE CONFIG (replace with your values) ───────────────
+const SUPABASE_URL = 'https://bvihbtrnxhyudtydsycl.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2aWhidHJueGh5dWR0eWRzeWNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyOTI5MDcsImV4cCI6MjA4OTg2ODkwN30.x9b3PnHO5zYWsz73bcm24HORYxID7ET04yl4uN-9saE';
+
+// ── SUPABASE FETCH ────────────────────────────────────────────
+async function sbFetch(path) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+async function loadAllLots() {
+  try {
+    let all = [], offset = 0;
+    while(true) {
+      const batch = await sbFetch(`lots?select=id,title,category,condition,location,units,cartons,pallets,original_retail,website_price,avg_unit_website,deal_score,season,card_image,lot_images,manifest_loaded,manifest_item_count&visible_on_site=eq.true&status=eq.AVAILABLE&order=deal_score.desc&limit=1000&offset=${offset}`);
+      all = all.concat(batch);
+      if (batch.length < 1000) break;
+      offset += 1000;
+    }
+    return all.map(l => ({
+      ...l,
+      avg_unit_price: parseFloat(l.avg_unit_website) || (l.units > 0 ? l.website_price / l.units : 0),
+      deal_score: parseFloat(l.deal_score) || 0,
+      website_price: parseFloat(l.website_price) || 0,
+      original_retail: parseFloat(l.original_retail) || 0,
+      lot_images: Array.isArray(l.lot_images) ? l.lot_images : (typeof l.lot_images === 'string' ? JSON.parse(l.lot_images || '[]') : []),
+      card_image: l.card_image || null,
+    }));
+  } catch(e) {
+    console.error('Supabase error:', e);
+    return [];
+  }
+}
+
+// Placeholder — will be populated from Supabase
+let LOTS = [];
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+const f$ = n => '$' + Math.round(n).toLocaleString('en-US');
+const fN = n => n.toLocaleString('en-US');
+
+const CAT_META = {
+  'Dresses':{bg:'linear-gradient(135deg,#FDF2F8,#FCE7F3)',accent:'#DB2777'},
+  'Womens Shoes':{bg:'linear-gradient(135deg,#F5F3FF,#EDE9FE)',accent:'#7C3AED'},
+  'Womens Better Apparel':{bg:'linear-gradient(135deg,#EFF6FF,#DBEAFE)',accent:'#3B82F6'},
+  'Womens Everyday Apparel':{bg:'linear-gradient(135deg,#F0FDFA,#CCFBF1)',accent:'#0D9488'},
+  'Textiles':{bg:'linear-gradient(135deg,#F0FDF4,#DCFCE7)',accent:'#16A34A'},
+  'Childrens Apparel & Accessories':{bg:'linear-gradient(135deg,#FFF7ED,#FFEDD5)',accent:'#EA580C'},
+  'Intimate Apparel/ Sleepwear':{bg:'linear-gradient(135deg,#FFF1F2,#FFE4E6)',accent:'#E11D48'},
+  'Mens Suits & Coats':{bg:'linear-gradient(135deg,#F8FAFC,#F1F5F9)',accent:'#334155'},
+};
+
+const CAT_IMAGES = {
+  'Womens Shoes': 'https://i.ibb.co/LXX5Jh3q/women-intimate.jpg',
+  'Dresses': 'https://i.ibb.co/N6gg6M8f/women-dresses.jpg',
+  'Womens Better Apparel': 'https://i.ibb.co/B5WkBnGJ/women-better-appearals.jpg',
+  'Womens Everyday Apparel': 'https://i.ibb.co/B5WkBnGJ/women-better-appearals.jpg',
+  'Blm Womens Rtw': 'https://i.ibb.co/B5WkBnGJ/women-better-appearals.jpg',
+  'Juniors Apparel': 'https://i.ibb.co/B5WkBnGJ/women-better-appearals.jpg',
+  'Womens Active': 'https://i.ibb.co/B5WkBnGJ/women-better-appearals.jpg',
+  'Childrens Apparel & Accessories': 'https://i.ibb.co/XR984Ls/children-clothing.jpg',
+  'Textiles': 'https://i.ibb.co/rKMfSRk8/bedding-and-textile.jpg',
+  'Tabletop Glass Table Linens': 'https://i.ibb.co/rKMfSRk8/bedding-and-textile.jpg',
+  'Intimate Apparel/ Sleepwear': 'https://i.ibb.co/VcHPCbNw/intimate-women.jpg',
+  'Mens Suits & Coats': 'https://i.ibb.co/Xr5MSNDs/men-suits-and-jackets.jpg',
+  'Mens Apparel': 'https://i.ibb.co/Xr5MSNDs/men-suits-and-jackets.jpg',
+  'Mens Shoes': 'https://i.ibb.co/Xr5MSNDs/men-suits-and-jackets.jpg',
+  'Mens Accessories': 'https://i.ibb.co/Xr5MSNDs/men-suits-and-jackets.jpg',
+  'Blm Mens Polo': 'https://i.ibb.co/Xr5MSNDs/men-suits-and-jackets.jpg',
+  'Handbags & Accessories': 'https://i.ibb.co/WWz0mmTx/handbag-and-accessories.jpg',
+  'Womens Accessories': 'https://i.ibb.co/WWz0mmTx/handbag-and-accessories.jpg',
+  'Designer Handbags': 'https://i.ibb.co/WWz0mmTx/handbag-and-accessories.jpg',
+  'Luggage /Backpacks /Access': 'https://i.ibb.co/WWz0mmTx/handbag-and-accessories.jpg',
+  'Womens Swimwear': 'https://i.ibb.co/hS4fDTW/swimwear.jpg',
+  'Jewelry': 'https://i.ibb.co/gM4vh585/jewelry.jpg',
+  'Housewares/ Kitchen': 'https://i.ibb.co/GQW6hLrz/kitchen-stuff.jpg',
+  'Cosmetics/Bath & Body': 'https://i.ibb.co/GQW6hLrz/kitchen-stuff.jpg'
+};
+const FALLBACK_IMG = 'https://i.ibb.co/YvZ106p/general-merchandise.jpg';
+
+const getMeta = function(cat) {
+  // Normalize: title case for lookup (DB stores UPPERCASE)
+  var key = cat ? cat.split(' ').map(function(w){
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }).join(' ') : '';
+  // Fix special cases after title-casing
+  key = key.replace('Blm ','BLM ').replace('/ ','/ ').replace(' & ',' & ');
+  var m = CAT_META[key] || CAT_META[cat] || {bg:'linear-gradient(135deg,#F8FAFC,#EFF6FF)',accent:'#6C2BD9'};
+  m.img = CAT_IMAGES[key] || CAT_IMAGES[cat] || FALLBACK_IMG;
+  return m;
+};
+
+const COND_BADGE = {'STORE STOCK':'b-green','CUSTOMER RETURNS':'b-orange','JOBOUT':'b-blue'};
+const COND_LBL = {'STORE STOCK':'Brand New','CUSTOMER RETURNS':'Customer Returns','JOBOUT':'Shelf Pull'};
+
+// Frontend-only display names for categories (backend stays unchanged)
+const CAT_DISPLAY = {
+  'Blm Womens Rtw': "Women's Brand Apparel",
+  'Blm Designer Rtw': "Designer Brand Apparel",
+  'Blm Mens Polo': "Men's Brand Polo",
+  'Blm Young Mens': "Young Men's Brand",
+  'Blm Juniors': "Juniors Brand Apparel",
+  'Blm Contemporary Mens': "Contemporary Men's Brand",
+  'Tabletop Glass Table Linens': "Kitchen Dinnerware",
+  'Textiles': "Bedding & Textiles",
+  'Ralph Lauren Apparel': "Ralph Lauren",
+  'Ralph Lauren Nonapparel': "Ralph Lauren Accessories",
+  'Ralph Lauren Childrens': "Ralph Lauren Children",
+  'Womens Everyday Apparel': "Women's Everyday",
+  'Womens Better Apparel': "Women's Better Apparel",
+  'Womens Active': "Women's Active",
+  'Womens Accessories': "Women's Accessories",
+  'Womens Swimwear': "Women's Swimwear",
+  'Womens Socks & Hosiery': "Women's Hosiery",
+  'Childrens Apparel & Accessories': "Children's",
+  'Housewares/ Kitchen': "Kitchen & Home",
+  'Cosmetics/Bath & Body': "Beauty & Bath",
+  'General Merchandise & Electronics': "General Merchandise",
+  'Luggage /Backpacks /Access': "Luggage & Bags",
+  'Mens Suits & Coats': "Men's Suits & Coats",
+  'Mens Apparel': "Men's Apparel",
+  'Mens Shoes': "Men's Shoes",
+  'Mens Accessories': "Men's Accessories",
+  'Mens Shorts/ Swim/ Active': "Men's Active & Swim",
+  'Mens Coats, Mens Suits': "Men's Coats & Suits",
+  'Juniors Apparel': "Juniors",
+  'Handbags & Accessories': "Handbags",
+  'Designer Handbags': "Designer Handbags",
+  'Trending Now': "Trending",
+  'Aqua': "Aqua Brand",
+};
+function catDisplay(cat) {
+  if(!cat) return cat;
+  var key = cat.split(' ').map(function(w){
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }).join(' ').replace('Blm ','BLM ').replace(' & ',' & ');
+  // Format raw DB value nicely if no mapping found
+  var display = CAT_DISPLAY[key] || CAT_DISPLAY[cat];
+  if(display) return display;
+  // Default: title case the raw category
+  return key;
+}
+const DEAL_BADGE = s => s>=93?'b-red 🔥 Hot Deal':s>=91?'b-teal ⭐ Great Deal':'b-blue ✓ Good Deal';
+
+function dealBadge(score) {
+  if(score>=93) return {cls:'b-red',lbl:'🔥 Hot Deal'};
+  if(score>=91) return {cls:'b-teal',lbl:'⭐ Great Deal'};
+  return {cls:'b-blue',lbl:'✓ Good Deal'};
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let currentPage = 'home';
+let filterCats = [], filterConds = [], filterLocs = [];
+let filtered = [], visibleCount = 18;
+const PER_PAGE = 18;
+
+// ─── PAGE NAVIGATION ──────────────────────────────────────────────────────────
+function showPage(pg, initCat) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+pg).classList.add('active');
+  const nb = document.getElementById('nav-'+pg);
+  if(nb) nb.classList.add('active');
+  currentPage = pg;
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(pg==='listings') {
+    if(initCat) { filterCats=[initCat]; syncFilterUI(); }
+    applyFilters();
+  }
+}
+
+// ─── LOT CARD HTML ────────────────────────────────────────────────────────────
+function lotCardHTML(lot) {
+  const m = getMeta(lot.category);
+  const db = dealBadge(lot.deal_score);
+  const savings = lot.original_retail - lot.website_price;
+  const scoreColor = lot.deal_score>=93?'#DC2626':lot.deal_score>=91?'#0F766E':'#1D4ED8';
+  return `
+  <div class="lot-card fade-up" onclick="viewLot('${lot.id}')">
+    <div class="lot-img" style="background:${m.bg}">
+      <img src="${lot.card_image || m.img}" alt="${lot.category}"
+        style="width:100%;height:100%;object-fit:cover;transition:transform .3s;position:absolute;top:0;left:0"
+        onerror="this.src=m.img;this.onerror=null">
+      <div class="lot-top-badges">
+        <span class="badge ${COND_BADGE[lot.condition]}">${COND_LBL[lot.condition]}</span>
+      </div>
+      <div class="lot-score-badge">
+        <span class="badge ${db.cls}">${db.lbl}</span>
+      </div>
+    </div>
+    <div class="lot-body">
+      <div class="lot-title">${lot.title}</div>
+      <div class="lot-loc">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${m.accent}" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${lot.location}
+      </div>
+      <div class="lot-stats-row">
+        <div class="lot-stat"><div class="lot-stat-lbl">Units</div><div class="lot-stat-val">${fN(lot.units)}</div></div>
+        <div class="lot-stat"><div class="lot-stat-lbl">Deal Score</div><div class="lot-stat-val" style="color:${scoreColor}">${lot.deal_score}%</div></div>
+      </div>
+      <div class="lot-pricing">
+        <span class="lot-price">${f$(lot.website_price)}</span>
+        <span class="lot-retail-old">${f$(lot.original_retail)}</span>
+      </div>
+      <div class="lot-unit-p">${f$(lot.avg_unit_price)}/unit &nbsp;·&nbsp; Save ${f$(savings)}</div>
+      <button class="btn-grad" style="width:100%;padding:10px;font-size:14px" onclick="event.stopPropagation();viewLot('${lot.id}')">View Lot Details</button>
+      <div class="lot-id">Lot #${lot.id}</div>
+    </div>
+  </div>`;
+}
+
+// ─── VIEW LOT DETAIL ──────────────────────────────────────────────────────────
+function viewLot(id) {
+  const lot = LOTS.find(l=>l.id===id);
+  if(!lot) return;
+  const m = getMeta(lot.category);
+  const db = dealBadge(lot.deal_score);
+  const savings = lot.original_retail - lot.website_price;
+  const savingsPct = ((savings/lot.original_retail)*100).toFixed(1);
+  const buyPct = ((lot.website_price/lot.original_retail)*100).toFixed(1);
+
+  // Bar chart data: price comparison
+  const maxBar = lot.original_retail;
+  const priceW = Math.round((lot.website_price/maxBar)*100);
+
+  // Category distribution bars
+  const catCounts = {};
+  LOTS.forEach(l=>{ catCounts[l.category]=(catCounts[l.category]||0)+1; });
+  const catArr = Object.entries(catCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxCat = catArr[0][1];
+  const PIE_COLORS = ['#6C2BD9','#14B8A6','#EC4899','#F97316','#3B82F6','#16A34A'];
+
+  const catBarsHTML = catArr.map(([name,count],i)=>`
+    <div class="bar-row">
+      <div class="bar-lbl">${name.replace(' & Accessories','').replace(' Apparel','')}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((count/maxCat)*100)}%;background:${PIE_COLORS[i%PIE_COLORS.length]}">${count}</div></div>
+      <div class="bar-num">${count} lots</div>
+    </div>`).join('');
+
+  const html = `
+  <button class="back-btn" onclick="showPage('listings')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Listings
+  </button>
+
+  <div class="detail-header">
+    <div class="detail-top">
+      <div>
+        <div class="detail-lot-id">Lot #${lot.id}</div>
+        <div class="detail-title">${lot.title}</div>
+        <div class="detail-badges-row">
+          <span class="badge ${COND_BADGE[lot.condition]}">${COND_LBL[lot.condition]}</span>
+          <span class="badge ${db.cls}">${db.lbl}</span>
+          <span class="badge b-purple">${lot.category}</span>
+        </div>
+        <div class="detail-loc">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${m.accent}" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${lot.location} &nbsp;·&nbsp; <span style="color:var(--text3)">${lot.season}</span>
+        </div>
+      </div>
+      <div class="detail-price-box">
+        <div class="detail-price-lbl">Deal Spot Price</div>
+        <div class="detail-price">${f$(lot.website_price)}</div>
+        <div class="detail-old-retail">Retail: ${f$(lot.original_retail)}</div>
+        <div class="detail-savings">You save ${f$(savings)} (${savingsPct}% off)</div>
+        <div class="detail-btns">
+          <a href="https://wa.me/1234567890" target="_blank">
+            <button class="btn-wa" style="font-size:13px;padding:9px 16px">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </button>
+          </a>
+          <button class="btn-grad btn-sm purchase-btn" data-lid="${lot.id}">Request Purchase</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="metric-icon" style="background:#EDE9FE">📦</div><div class="metric-lbl">Total Units</div><div class="metric-val">${fN(lot.units)}</div><div class="metric-sub">pieces</div></div>
+    <div class="metric-card"><div class="metric-icon" style="background:#DCFCE7">💰</div><div class="metric-lbl">Deal Spot Price</div><div class="metric-val" style="color:var(--purple)">${f$(lot.website_price)}</div><div class="metric-sub">total</div></div>
+    <div class="metric-card"><div class="metric-icon" style="background:#FEF3C7">🏷️</div><div class="metric-lbl">Est. Retail Value</div><div class="metric-val">${f$(lot.original_retail)}</div><div class="metric-sub">original retail</div></div>
+    <div class="metric-card"><div class="metric-icon" style="background:#F0FDF4">💵</div><div class="metric-lbl">Avg. Per Unit</div><div class="metric-val">${f$(lot.avg_unit_price)}</div><div class="metric-sub">Deal Spot price</div></div>
+    <div class="metric-card"><div class="metric-icon" style="background:#FEF2F2">🔥</div><div class="metric-lbl">Deal Score</div><div class="metric-val" style="color:#DC2626">${lot.deal_score}%</div><div class="metric-sub">off retail</div></div>
+  </div>
+
+  <div class="detail-2col">
+    <div class="detail-box">
+      <div class="detail-box-hd">Lot Details</div>
+      <div class="desc-row"><span class="desc-key">Lot ID</span><span class="desc-val">#${lot.id}</span></div>
+      <div class="desc-row"><span class="desc-key">Source</span><span class="desc-val">Macy's Liquidation Program</span></div>
+      <div class="desc-row"><span class="desc-key">Category</span><span class="desc-val">${lot.category}</span></div>
+      <div class="desc-row"><span class="desc-key">Condition</span><span class="badge ${COND_BADGE[lot.condition]}">${COND_LBL[lot.condition]}</span></div>
+      <div class="desc-row"><span class="desc-key">Season</span><span class="desc-val" style="font-size:13px">${lot.season}</span></div>
+      <div class="desc-row"><span class="desc-key">Units</span><span class="desc-val">${fN(lot.units)} pcs</span></div>
+      <div class="desc-row"><span class="desc-key">Cartons</span><span class="desc-val">${lot.cartons}</span></div>
+      <div class="desc-row"><span class="desc-key">Pallets</span><span class="desc-val">${lot.pallets}</span></div>
+      <div class="desc-row"><span class="desc-key">Buying at</span><span class="desc-val" style="color:#16A34A">${buyPct}% of retail</span></div>
+    </div>
+    <div class="detail-box">
+      <div class="detail-box-hd">Logistics & Shipping</div>
+      <div class="desc-row"><span class="desc-key">Warehouse</span><span class="desc-val" style="font-size:13px">${lot.location}</span></div>
+      <div class="desc-row"><span class="desc-key">Pallet Count</span><span class="desc-val">${lot.pallets} pallet${lot.pallets>1?'s':''}</span></div>
+      <div class="desc-row"><span class="desc-key">Carton Count</span><span class="desc-val">${lot.cartons} carton${lot.cartons>1?'s':''}</span></div>
+      <div class="desc-row"><span class="desc-key">Pickup Options</span><span class="desc-val">Will Call / Freight</span></div>
+      <div class="desc-row"><span class="desc-key">Export Support</span><span class="desc-val" style="color:var(--teal);font-weight:700">✓ MENA & International</span></div>
+      <div class="desc-row"><span class="desc-key">Consolidation</span><span class="desc-val">Available on request</span></div>
+      <div style="margin-top:16px;padding:14px;background:linear-gradient(135deg,#F0FDFA,#CCFBF1);border-radius:10px;border:1px solid #99F6E4">
+        <div style="font-weight:800;font-size:14px;color:#0F766E;margin-bottom:4px">🌍 Export Buyers</div>
+        <div style="font-size:13px;color:#0F766E;line-height:1.6">We assist with freight forwarding, consolidation, and documentation for MENA, GCC, North Africa & beyond.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-2col">
+    <div class="detail-box">
+      <div class="detail-box-hd">Price vs. Retail Value</div>
+      <div class="bar-chart" style="margin-top:16px">
+        <div class="bar-row">
+          <div class="bar-lbl" style="font-weight:700;color:var(--purple)">Deal Spot Price</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${priceW}%;background:var(--purple)">${f$(lot.website_price)}</div></div>
+          <div class="bar-num">${priceW}%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl" style="color:var(--text2)">Original Retail</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:#CBD5E1;color:var(--text2)">${f$(lot.original_retail)}</div></div>
+          <div class="bar-num">100%</div>
+        </div>
+      </div>
+      <div style="margin-top:20px;padding:14px;background:var(--purple-xl);border-radius:10px;text-align:center">
+        <div style="font-size:13px;color:var(--text2)">You're buying at</div>
+        <div style="font-size:28px;font-weight:900;color:var(--purple)">${buyPct}% <span style="font-size:14px;font-weight:500">of retail</span></div>
+        <div style="font-size:13px;color:#16A34A;font-weight:700">Saving ${f$(savings)} off retail</div>
+      </div>
+    </div>
+    <div class="detail-box">
+      <div class="detail-box-hd">Inventory by Category</div>
+      <div class="bar-chart" style="margin-top:8px">${catBarsHTML}</div>
+    </div>
+  </div>
+
+  <div id="lot-gallery-area"></div>
+
+  <div class="manifest-wrap" id="manifest-area">
+    <div class="detail-box-hd" style="margin-bottom:16px">Manifest Items</div>
+    <div id="manifest-inner-placeholder">
+      <div class="manifest-loading">
+        <div style="width:28px;height:28px;border:2px solid #E2E8F0;border-top-color:#6C2BD9;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px"></div>
+        Loading manifest...
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h2>Ready to purchase Lot #${lot.id}?</h2>
+    <p>Contact us via WhatsApp or submit a purchase request. We typically respond within 2 hours.</p>
+    <div class="cta-box-btns">
+      <a href="https://wa.me/1234567890" target="_blank">
+        <button class="btn-wa" style="padding:13px 26px;font-size:15px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Contact on WhatsApp
+        </button>
+      </a>
+      <button class="btn-outline" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.4)">Request Full Manifest</button>
+    </div>
+  </div>`;
+
+  document.getElementById('detail-content').innerHTML = html;
+  showPage('detail');
+  // Build gallery and manifest after page renders
+  setTimeout(function(){
+    buildGallery(lot);
+    loadManifest(lot.id);
+  }, 100);
+}
+
+// ─── FILTERS ──────────────────────────────────────────────────────────────────
+function buildFilterUI() {
+  const cats = [...new Set(LOTS.map(l=>l.category))].sort();
+  const locs = [...new Set(LOTS.map(l=>l.location))].sort();
+
+  document.getElementById('filter-cats').innerHTML = '<div class="filter-lbl">Category</div>' +
+    cats.map(c=>`<label class="filter-chk"><input type="checkbox" value="${c}" onchange="toggleCat(this)"><span class="filter-chk-txt">${c}</span><span class="filter-cnt">${LOTS.filter(l=>l.category===c).length}</span></label>`).join('');
+
+  document.getElementById('filter-conds').innerHTML = '<div class="filter-lbl">Condition</div>' +
+    ['STORE STOCK','CUSTOMER RETURNS','JOBOUT'].map(c=>`<label class="filter-chk"><input type="checkbox" value="${c}" onchange="toggleCond(this)"><span class="filter-chk-txt">${COND_LBL[c]}</span><span class="filter-cnt">${LOTS.filter(l=>l.condition===c).length}</span></label>`).join('');
+
+  document.getElementById('filter-locs').innerHTML = '<div class="filter-lbl">Location</div>' +
+    locs.map(l=>`<label class="filter-chk"><input type="checkbox" value="${l}" onchange="toggleLoc(this)"><span class="filter-chk-txt" style="font-size:12px">${l}</span></label>`).join('');
+}
+
+function syncFilterUI() {
+  document.querySelectorAll('#filter-cats input').forEach(i=>{ i.checked=filterCats.includes(i.value); });
+  document.querySelectorAll('#filter-conds input').forEach(i=>{ i.checked=filterConds.includes(i.value); });
+  document.querySelectorAll('#filter-locs input').forEach(i=>{ i.checked=filterLocs.includes(i.value); });
+}
+
+function toggleCat(el) { filterCats=toggle(filterCats,el.value); applyFilters(); }
+function toggleCond(el) { filterConds=toggle(filterConds,el.value); applyFilters(); }
+function toggleLoc(el) { filterLocs=toggle(filterLocs,el.value); applyFilters(); }
+function toggle(arr,v) { return arr.includes(v)?arr.filter(x=>x!==v):[...arr,v]; }
+
+function clearFilters() {
+  filterCats=[]; filterConds=[]; filterLocs=[];
+  document.getElementById('search-input').value='';
+  document.getElementById('price-min').value='';
+  document.getElementById('price-max').value='';
+  document.getElementById('sort-select').value='deal_score';
+  syncFilterUI();
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = (document.getElementById('search-input').value||'').toLowerCase();
+  const pMin = parseFloat(document.getElementById('price-min').value)||0;
+  const pMax = parseFloat(document.getElementById('price-max').value)||Infinity;
+  const sort = document.getElementById('sort-select').value;
+
+  filtered = LOTS.filter(l=>{
+    if(filterCats.length && !filterCats.includes(l.category)) return false;
+    if(filterConds.length && !filterConds.includes(l.condition)) return false;
+    if(filterLocs.length && !filterLocs.includes(l.location)) return false;
+    if(l.website_price < pMin || l.website_price > pMax) return false;
+    if(q && !l.title.toLowerCase().includes(q) && !l.category.toLowerCase().includes(q) && !l.id.includes(q)) return false;
+    return true;
+  });
+
+  if(sort==='deal_score') filtered.sort((a,b)=>b.deal_score-a.deal_score);
+  else if(sort==='price_asc') filtered.sort((a,b)=>a.website_price-b.website_price);
+  else if(sort==='price_desc') filtered.sort((a,b)=>b.website_price-a.website_price);
+  else if(sort==='units_desc') filtered.sort((a,b)=>b.units-a.units);
+
+  visibleCount = PER_PAGE;
+  renderListings();
+}
+
+function renderListings() {
+  const grid = document.getElementById('listings-grid');
+  const empty = document.getElementById('listings-empty');
+  const lmw = document.getElementById('load-more-wrap');
+  const lmb = document.getElementById('load-more-btn');
+  const ct = document.getElementById('results-count');
+
+  ct.innerHTML = `<strong>${filtered.length}</strong> lots found`;
+
+  if(filtered.length===0) {
+    grid.innerHTML=''; empty.style.display='block'; lmw.style.display='none'; return;
+  }
+  empty.style.display='none';
+  const show = filtered.slice(0,visibleCount);
+  grid.innerHTML = show.map(lotCardHTML).join('');
+  if(filtered.length > visibleCount) {
+    lmw.style.display='block';
+    lmb.textContent = `Load More (${filtered.length-visibleCount} remaining)`;
+  } else {
+    lmw.style.display='none';
+  }
+}
+
+function loadMore() {
+  visibleCount += PER_PAGE;
+  renderListings();
+}
+
+// ─── HOME PAGE INIT ───────────────────────────────────────────────────────────
+function initHome() {
+  // Stats
+  const totalRetail = LOTS.reduce((s,l)=>s+l.original_retail,0);
+  const totalUnits = LOTS.reduce((s,l)=>s+l.units,0);
+  document.getElementById('stat-lots').textContent = LOTS.length + '+';
+  document.getElementById('stat-retail').textContent = '$' + (totalRetail/1e6).toFixed(1) + 'M+';
+  document.getElementById('stat-units').textContent = Math.round(totalUnits/1000) + 'K+';
+
+  // Hero mini cards
+  const hot = [...LOTS].sort((a,b)=>b.deal_score-a.deal_score).slice(0,4);
+  document.getElementById('hero-mini-cards').innerHTML = hot.map(lot=>{
+    const m=getMeta(lot.category);
+    return `<div class="mini-card" onclick="viewLot('${lot.id}')">
+      <div class="mc-cat">${lot.category}</div>
+      <div class="mc-title">${lot.title.split('–')[0].trim()}</div>
+      <div class="mc-price">${f$(lot.website_price)}</div>
+      <div class="mc-retail">Retail: ${f$(lot.original_retail)}</div>
+      <div style="margin-top:10px"><span class="badge b-red" style="font-size:11px">🔥 ${lot.deal_score}% off retail</span></div>
+    </div>`;
+  }).join('');
+
+  // Category grid
+  const catCounts = {};
+  LOTS.forEach(l=>{ catCounts[l.category]=(catCounts[l.category]||0)+1; });
+  const topCats = Object.entries(catCounts).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  document.getElementById('cat-grid').innerHTML = topCats.map(([cat,count])=>{
+    const m=getMeta(cat);
+    const shortName = cat.replace(' & Accessories','').replace(' Apparel','').replace('Womens','Women\'s').replace('Mens','Men\'s');
+    return `<div class="cat-card" onclick="showPage('listings','${cat}')">
+      <div class="cat-icon" style="background:${m.bg};overflow:hidden">
+        <img src="${m.img}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">
+      </div>
+      <div class="cat-name">${catDisplay(cat)}</div>
+      <div class="cat-count">${count} lots</div>
+    </div>`;
+  }).join('');
+
+  // Featured grid (top 6)
+  const featured = [...LOTS].sort((a,b)=>b.deal_score-a.deal_score).slice(0,6);
+  document.getElementById('featured-grid').innerHTML = featured.map(lotCardHTML).join('');
+}
+
+
+
+
+// ── BUILD GALLERY (called after viewLot renders) ──────────────
+function buildGallery(lot) {
+  var images = lot.lot_images;
+  var ga = document.getElementById('lot-gallery-area');
+  if(!ga) return;
+  if(!images || !Array.isArray(images) || images.length === 0) {
+    ga.style.display = 'none';
+    return;
+  }
+
+  var mainId = 'gimg-' + lot.id;
+  var html = '<div class="gallery-wrap">';
+  html += '<div class="detail-box-hd" style="margin-bottom:16px">Product Gallery</div>';
+  html += '<div class="gallery-main">';
+  html += '<img id="' + mainId + '" src="' + images[0] + '" style="width:100%;height:100%;object-fit:contain" onerror="this.style.opacity=0.2">';
+  html += '</div>';
+
+  if(images.length > 1) {
+    html += '<div class="gallery-thumbs" id="gthumbs-' + lot.id + '">';
+    for(var i=0; i<images.length; i++) {
+      html += '<div class="gallery-thumb' + (i===0?' active':'') + '" data-src="' + images[i] + '" data-main="' + mainId + '" data-lot="' + lot.id + '">';
+      html += '<img src="' + images[i] + '" class="gthumb-img">';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  ga.innerHTML = html;
+
+  // Attach thumb click events after rendering
+  var thumbs = ga.querySelectorAll('.gallery-thumb');
+  thumbs.forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      var src = this.getAttribute('data-src');
+      var mainImg = document.getElementById(this.getAttribute('data-main'));
+      if(mainImg) mainImg.src = src;
+      thumbs.forEach(function(t){ t.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+}
+
+// ── GALLERY ───────────────────────────────────────────────────
+function setGalleryImg(lotId, imgUrl, thumbEl) {
+  document.getElementById('gallery-main-img-' + lotId).src = imgUrl;
+  document.querySelectorAll('#manifest-' + lotId + ' .gallery-thumb, .gallery-thumb').forEach(function(t){ t.classList.remove('active'); });
+  if(thumbEl) thumbEl.classList.add('active');
+}
+
+// ── MANIFEST TABLE ────────────────────────────────────────────
+var _manifestData = {};
+var _manifestSort = { col: 'original_retail', dir: 'desc' };
+var _manifestFilter = '';
+
+async function loadManifest(lotId) {
+  var inner = document.getElementById('manifest-inner-' + lotId) || document.getElementById('manifest-inner-placeholder');
+  if(!inner) return;
+  try {
+    var items = await sbFetch('manifest_items?lot_id=eq.' + lotId + '&order=original_retail.desc&limit=500');
+    if(!items || items.length === 0) {
+      inner.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3)">No manifest data loaded for this lot yet.<br><span style="font-size:12px;margin-top:8px;display:block">Run the manifest import script to add item details.</span></div>';
+      return;
+    }
+    _manifestData[lotId] = items;
+    renderManifest(lotId);
+  } catch(e) {
+    inner.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3)">Manifest not available for this lot.</div>';
+  }
+}
+
+function renderManifest(lotId) {
+  var items = _manifestData[lotId] || [];
+  var filter = (_manifestFilter || '').toLowerCase();
+  var filtered = filter ? items.filter(function(i){
+    return (i.description||'').toLowerCase().includes(filter) ||
+           (i.color||'').toLowerCase().includes(filter) ||
+           (i.size||'').toLowerCase().includes(filter) ||
+           (i.vendor_name||'').toLowerCase().includes(filter);
+  }) : items;
+
+  var col = _manifestSort.col;
+  var dir = _manifestSort.dir;
+  filtered = filtered.slice().sort(function(a,b){
+    var av = a[col] || 0, bv = b[col] || 0;
+    if(typeof av === 'string') av = av.toLowerCase();
+    if(typeof bv === 'string') bv = bv.toLowerCase();
+    if(av < bv) return dir === 'asc' ? -1 : 1;
+    if(av > bv) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  var f$ = function(n){ return '$' + parseFloat(n||0).toFixed(2); };
+  
+  var parts = [];
+  parts.push('<div class="manifest-controls">');
+  parts.push('<div class="manifest-search">');
+  parts.push('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>');
+  parts.push('<input placeholder="Search description, color, size..." oninput="filterManifest(' + JSON.stringify(lotId) + ',this.value)" value="' + (_manifestFilter||'') + '">');
+  parts.push('</div>');
+  parts.push('<span class="manifest-count">' + filtered.length + ' of ' + items.length + ' items</span>');
+  parts.push('<button class="manifest-dl" onclick="downloadManifest(' + JSON.stringify(lotId) + ')">&#x2B07; Download CSV</button>');
+  parts.push('</div>');
+  parts.push('<div class="manifest-table-wrap"><table class="manifest-table"><thead><tr>');
+  
+  var cols = [
+    {key:'', label:'Photo', sortable:false},
+    {key:'description', label:'Description', sortable:true},
+    {key:'color', label:'Color', sortable:true},
+    {key:'size', label:'Size', sortable:true},
+    {key:'qty', label:'Qty', sortable:true},
+    {key:'original_retail', label:'Retail/Unit', sortable:true},
+    {key:'total_retail', label:'Total Retail', sortable:true}
+  ];
+  
+  cols.forEach(function(c) {
+    if(!c.sortable) {
+      parts.push('<th style="width:50px">' + c.label + '</th>');
+    } else {
+      var cls = c.key === col ? (' sort-' + dir) : '';
+      parts.push('<th class="' + cls + '" onclick="sortManifest(' + JSON.stringify(lotId) + ',' + JSON.stringify(c.key) + ')">' + c.label + '</th>');
+    }
+  });
+  
+  parts.push('</tr></thead><tbody>');
+
+  filtered.forEach(function(item){
+    var imgHtml = '';
+    if(item.image_url) {
+      imgHtml = '<img class="manifest-thumb" src="' + item.image_url + '" onerror="this.style.opacity=0" onclick="setGalleryImg(' + JSON.stringify(lotId) + ',' + JSON.stringify(item.image_url) + ',null)">';
+    } else {
+      imgHtml = '<div style="width:40px;height:40px;background:#F1F5F9;border-radius:6px"></div>';
+    }
+    parts.push('<tr>');
+    parts.push('<td>' + imgHtml + '</td>');
+    parts.push('<td style="max-width:280px;line-height:1.4">' + (item.description||'') + '</td>');
+    parts.push('<td>' + (item.color||'&mdash;') + '</td>');
+    parts.push('<td>' + (item.size||'&mdash;') + '</td>');
+    parts.push('<td style="text-align:center">' + (item.qty||1) + '</td>');
+    parts.push('<td style="font-weight:600">' + f$(item.original_retail) + '</td>');
+    parts.push('<td style="font-weight:700;color:var(--purple)">' + f$(item.total_retail) + '</td>');
+    parts.push('</tr>');
+  });
+
+  parts.push('</tbody></table></div>');
+  var el = document.getElementById('manifest-inner-' + lotId) || document.getElementById('manifest-inner-placeholder');
+  if(el) el.innerHTML = parts.join('');
+}
+
+function sortManifest(lotId, col) {
+  if(_manifestSort.col === col) {
+    _manifestSort.dir = _manifestSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    _manifestSort = { col: col, dir: col === 'original_retail' || col === 'total_retail' || col === 'qty' ? 'desc' : 'asc' };
+  }
+  renderManifest(lotId);
+}
+
+function filterManifest(lotId, val) {
+  _manifestFilter = val;
+  renderManifest(lotId);
+}
+
+function downloadManifest(lotId) {
+  var items = _manifestData[lotId] || [];
+  if(!items.length) return;
+  var headers = ['UPC','Description','Color','Size','Qty','Retail/Unit','Total Retail','Vendor'];
+  var rows = items.map(function(i){ return [i.upc||'', (i.description||'').replace(/,/g,''), i.color||'', i.size||'', i.qty||1, i.original_retail||0, i.total_retail||0, (i.vendor_name||'').replace(/,/g,'')]; });
+  var csv = [headers.join(',')].concat(rows.map(function(r){ return r.join(','); })).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'lot-' + lotId + '-manifest.csv';
+  a.click();
+}
+
+// ── PURCHASE MODAL ────────────────────────────────────────────
+var _modalLot = null;
+
+function openPurchaseModal(lotId) {
+  var lot = LOTS.find(function(l){ return l.id == lotId; });
+  if(!lot) return;
+  _modalLot = lot;
+  var ship = (lot.pallets || 1) * 400;
+  var total = lot.website_price + ship;
+  var f$ = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
+  document.getElementById('modal-lot-name').textContent = 'Lot #' + lot.id + ' — ' + lot.category;
+  document.getElementById('sum-title').textContent = lot.title.split('–')[0].trim();
+  document.getElementById('sum-price').textContent = f$(lot.website_price);
+  document.getElementById('sum-ship-lbl').textContent = 'Shipping (' + (lot.pallets||1) + ' pallet' + ((lot.pallets||1)>1?'s':'') + ' × $400)';
+  document.getElementById('sum-ship').textContent = f$(ship);
+  document.getElementById('sum-total').textContent = f$(total);
+  document.getElementById('modal-form-area').style.display = 'block';
+  document.getElementById('modal-success-area').style.display = 'none';
+  var btn = document.getElementById('fsubmit-btn');
+  btn.disabled = false;
+  btn.textContent = 'Submit Purchase Request';
+  ['f-name','f-email','f-phone','f-company','f-addr','f-city','f-state','f-zip','f-notes'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  document.getElementById('purchase-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('purchase-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Modal close on backdrop click — attached in window.onload
+
+
+async function submitRequest() {
+  var name = document.getElementById('f-name').value.trim();
+  var email = document.getElementById('f-email').value.trim();
+  var phone = document.getElementById('f-phone').value.trim();
+  var addr = document.getElementById('f-addr').value.trim();
+  var city = document.getElementById('f-city').value.trim();
+  var state = document.getElementById('f-state').value.trim();
+  if(!name || !email || !phone || !addr || !city || !state) {
+    alert('Please fill in all required fields (marked with *)');
+    return;
+  }
+  var lot = _modalLot;
+  var ship = (lot.pallets || 1) * 400;
+  var total = lot.website_price + ship;
+  var company = document.getElementById('f-company').value.trim();
+  var btype = document.getElementById('f-btype').value;
+  var zip = document.getElementById('f-zip').value.trim();
+  var shipPref = document.getElementById('f-ship').value;
+  var notes = document.getElementById('f-notes').value.trim();
+  var fullAddr = addr + ', ' + city + ', ' + state + (zip ? ' ' + zip : '');
+  var f$ = function(n){ return '$' + Math.round(n).toLocaleString('en-US'); };
+
+  var btn = document.getElementById('fsubmit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    await fetch(SUPABASE_URL + '/rest/v1/inquiries', {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({
+        lot_id: lot.id, buyer_name: name, buyer_email: email, buyer_phone: phone, buyer_country: state,
+        message: 'Company: ' + (company||'N/A') + '\nType: ' + (btype||'N/A') + '\nShip to: ' + fullAddr + '\nPref: ' + shipPref + '\nNotes: ' + (notes||'None') + '\nLot: ' + f$(lot.website_price) + '\nShipping: ' + f$(ship) + '\nTotal: ' + f$(total),
+        inquiry_type: 'purchase', status: 'new'
+      })
+    });
+  } catch(e) { console.error('Save error:', e); }
+
+  var today = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var inv = 'DS-' + lot.id + '-' + Date.now().toString().slice(-4);
+  var draft = 'To: ' + email + '\nSubject: Deal Spot \u2014 Purchase Confirmation & Invoice #' + inv + '\n\nDear ' + name + ',\n\nThank you for your purchase request through Deal Spot. Please find your order details and invoice below.\n\n' +
+    '\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\nINVOICE #' + inv + '\nDate: ' + today + '\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n' +
+    'LOT DETAILS\n\u2022 Lot ID:        #' + lot.id + '\n\u2022 Description:   ' + lot.title + '\n\u2022 Category:      ' + lot.category + '\n\u2022 Condition:     ' + lot.condition + '\n\u2022 Warehouse:     ' + lot.location + '\n\u2022 Units:         ' + lot.units.toLocaleString() + ' pieces\n\u2022 Pallets:       ' + (lot.pallets||1) + '\n\n' +
+    'PRICING BREAKDOWN\n\u2022 Lot Price:           ' + f$(lot.website_price) + '\n\u2022 Shipping (' + (lot.pallets||1) + ' pallets): ' + f$(ship) + '\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\u2022 TOTAL DUE:           ' + f$(total) + '\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n' +
+    'SHIP TO\n' + name + (company ? '\n' + company : '') + '\n' + fullAddr + '\nPhone: ' + phone + '\n\n' +
+    'PAYMENT INSTRUCTIONS\nTo guarantee and secure this lot, full payment must be received within 48 hours.\nLots are allocated on a first-paid basis and cannot be held without payment.\n\n[ADD YOUR STRIPE PAYMENT LINK HERE]\n\nOnce payment is confirmed, we will process your order and provide tracking information within 1-2 business days.\n\nFor any questions, reply to this email or reach us via WhatsApp.\n\nBest regards,\nDeal Spot Team';
+
+  document.getElementById('email-content').textContent = draft;
+  document.getElementById('modal-form-area').style.display = 'none';
+  document.getElementById('modal-success-area').style.display = 'block';
+}
+
+function copyDraft() {
+  var text = document.getElementById('email-content').textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    var btn = document.querySelector('.copy-btn');
+    btn.textContent = '\u2705 Copied!';
+    setTimeout(function(){ btn.textContent = '\uD83D\uDCCB Copy Email to Clipboard'; }, 2500);
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.onload = async function() {
+  // Attach modal backdrop close
+  var modalEl = document.getElementById('purchase-modal');
+  if(modalEl) {
+    modalEl.addEventListener('click', function(e){
+      if(e.target === this) closeModal();
+    });
+  }
+  // Purchase button delegation
+  document.body.addEventListener('click', function(e) {
+    var btn = e.target.closest('.purchase-btn');
+    if(btn) {
+      var lid = btn.getAttribute('data-lid');
+      if(lid) openPurchaseModal(lid);
+    }
+  });
+  // Load data
+  LOTS = await loadAllLots();
+  initHome();
+  buildFilterUI();
+  applyFilters();
+};
+</script>
+<div class="modal-overlay" id="purchase-modal">
+<div class="modal">
+<div class="modal-head">
+<div><div class="modal-title">Request to Purchase</div><div class="modal-subtitle" id="modal-lot-name"></div></div>
+<button class="modal-close" onclick="closeModal()">&#x2715;</button>
+</div>
+<div id="modal-form-area">
+<div class="order-summary">
+<div class="order-tag">Order Summary</div>
+<div class="order-row"><span id="sum-title">—</span><span id="sum-price">—</span></div>
+<div class="order-row"><span id="sum-ship-lbl">Shipping</span><span id="sum-ship">—</span></div>
+<div class="order-row total"><span>Total Due</span><span id="sum-total">—</span></div>
+</div>
+<div class="pay-notice"><span style="font-size:18px;flex-shrink:0">&#x1F512;</span><p>To <strong>secure and guarantee</strong> this lot, full payment is required before your order can be confirmed. Lots are allocated on a first-paid basis and cannot be held without payment.</p></div>
+<div class="form-grid">
+<div class="fg"><label class="flbl">Full Name *</label><input class="finp" id="f-name" placeholder="John Smith"></div>
+<div class="fg"><label class="flbl">Email *</label><input class="finp" id="f-email" type="email" placeholder="john@company.com"></div>
+<div class="fg"><label class="flbl">Phone *</label><input class="finp" id="f-phone" placeholder="+1 (555) 000-0000"></div>
+<div class="fg"><label class="flbl">Company Name</label><input class="finp" id="f-company" placeholder="ABC Resellers LLC"></div>
+<div class="fg full"><label class="flbl">Business Type</label><select class="finp" id="f-btype"><option value="">Select type</option><option>Amazon / eBay Reseller</option><option>Retail Store Owner</option><option>Export / Wholesale Buyer</option><option>Online Marketplace Seller</option><option>Flea Market / Liquidation Reseller</option><option>Other</option></select></div>
+<div class="fg full"><label class="flbl">Street Address *</label><input class="finp" id="f-addr" placeholder="123 Main Street"></div>
+<div class="fg"><label class="flbl">City *</label><input class="finp" id="f-city" placeholder="City"></div>
+<div class="fg"><label class="flbl">State / Country *</label><input class="finp" id="f-state" placeholder="State or Country"></div>
+<div class="fg"><label class="flbl">ZIP / Postal Code</label><input class="finp" id="f-zip" placeholder="ZIP"></div>
+<div class="fg"><label class="flbl">Shipping Preference</label><select class="finp" id="f-ship"><option value="direct">Direct from US warehouse</option><option value="export">Export / International</option></select></div>
+<div class="fg full"><label class="flbl">Additional Notes</label><textarea class="finp" id="f-notes" rows="3" placeholder="Questions or additional lot inquiries..." style="resize:vertical"></textarea></div>
+</div>
+<button class="fsubmit" id="fsubmit-btn" onclick="submitRequest()">Submit Purchase Request</button>
+</div>
+<div id="modal-success-area" style="display:none">
+<div class="sbox">
+<div class="sicon">&#x2705;</div>
+<div class="stitle">Request Submitted!</div>
+<div class="ssub">Your purchase request has been recorded.<br>Review the lot availability, then send the email below to the buyer.</div>
+<div class="email-box">
+<div class="email-lbl">&#x1F4E7; Draft Email — Ready to Send</div>
+<pre id="email-content"></pre>
+<button class="copy-btn" onclick="copyDraft()">&#x1F4CB; Copy Email to Clipboard</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="page" id="page-about">
+  <div style="max-width:860px;margin:0 auto;padding:48px 40px">
+    <div class="sec-tag">Our Story</div>
+    <div style="font-size:36px;font-weight:900;letter-spacing:-.025em;margin:8px 0 16px">About Deal Spot</div>
+    <div style="font-size:17px;color:var(--text2);line-height:1.8;margin-bottom:40px">
+      Deal Spot is a premium liquidation wholesale marketplace connecting resellers and export buyers with high-quality overstock and customer return merchandise sourced directly from top US retailers including Macy's.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px">
+      <div class="detail-box">
+        <div style="font-size:28px;margin-bottom:12px">🏬</div>
+        <div style="font-weight:800;font-size:17px;margin-bottom:8px">Our Source</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7">All inventory is sourced directly from Macy's official liquidation program — verified, transparent, and updated daily. Every lot comes with full manifest data and retail documentation.</div>
+      </div>
+      <div class="detail-box">
+        <div style="font-size:28px;margin-bottom:12px">🌍</div>
+        <div style="font-weight:800;font-size:17px;margin-bottom:8px">Who We Serve</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7">We serve US-based resellers (Amazon, eBay, retail stores) and international export buyers, with a strong focus on MENA, GCC, and North Africa markets. Export support and freight consolidation available.</div>
+      </div>
+      <div class="detail-box">
+        <div style="font-size:28px;margin-bottom:12px">📦</div>
+        <div style="font-weight:800;font-size:17px;margin-bottom:8px">How It Works</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7">Browse our live inventory, review lot details and manifests, and submit a purchase request. We coordinate logistics from 5 US warehouses and provide full shipping support including international freight forwarding.</div>
+      </div>
+      <div class="detail-box">
+        <div style="font-size:28px;margin-bottom:12px">✅</div>
+        <div style="font-weight:800;font-size:17px;margin-bottom:8px">Our Promise</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.7">Transparent pricing. Verified sources. No surprises. Every lot is clearly labeled with condition, location, unit count, and retail value — so you always know exactly what you're buying.</div>
+      </div>
+    </div>
+    <div style="background:var(--grad);border-radius:16px;padding:36px;text-align:center;color:#fff">
+      <div style="font-size:22px;font-weight:900;margin-bottom:8px">Ready to Start Sourcing?</div>
+      <div style="opacity:.85;margin-bottom:24px;font-size:15px">Browse our live inventory or contact us directly via WhatsApp.</div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <button onclick="showPage('listings')" style="background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.4);padding:12px 28px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit">Browse Lots</button>
+        <a href="https://wa.me/1234567890" target="_blank"><button class="btn-wa" style="padding:12px 28px;font-size:15px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
